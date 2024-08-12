@@ -91,5 +91,45 @@ describe("Create Account Page", () => {
       .should("contain", "Username cannot have special characters");
   });
 
-  it.only("7. Input Password debería aparecer con formato password", () => {});
+  it("7. Input Password debería aparecer con formato password", () => {
+    onCreateAccountPage.setUpUsernameAndPassword("", password);
+    onCreateAccountPage
+      .getPasswordInput()
+      .should("have.attr", "type", "password");
+  });
+
+  it("8. Register con Password vacío y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(usuario, "");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    onCreateAccountPage.getPasswordInput().then(($input) => {
+      expect($input[0].validationMessage).to.eq("Completa este campo");
+    });
+  });
+
+  it("9. Register con Password con menos de 6 caracteres y el resto de os campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(usuario, "pr12!");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    onCreateAccountPage
+      .getErrorMessage()
+      .should("contain", "Password must have between 6 and 16 characters");
+  });
+
+  it("10. Register con Password con más de 16 caracteres y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(usuario, "pruba1234567890?!");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    onCreateAccountPage
+      .getErrorMessage()
+      .should("contain", "Password must have between 6 and 16 characters");
+  });
+
+  it.only("11. ");
 });

@@ -54,21 +54,15 @@ export class CreateAccount {
    * @param {string} pass
    */
   setUpUsernameAndPassword(user, pass) {
-    // Para testear si los dos estan vacios
-    if (user == "" && pass == "") {
-      return;
-    }
     // Para podes testear cuando UNO es campo vacio
     if (user == "") {
       this.getPasswordInput().type(pass);
       return;
-    } else {
-      this.getUserInput().type(user);
-    }
-    if (pass == "") {
+    } else if (pass == "") {
       this.getUserInput().type(user);
       return;
     } else {
+      this.getUserInput().type(user);
       this.getPasswordInput().type(pass);
     }
   }
