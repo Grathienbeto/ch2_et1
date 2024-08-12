@@ -8,9 +8,11 @@ export class CreateAccount {
   dayInput = '[data-cy="day"]';
   monthInput = '[data-cy="month"]';
   yearInput = '[data-cy="year"]';
+  submitBtn = '[data-cy="submitForm"]';
   loginLink = '[data-cy="registertoggle"]';
 
   // Getters
+
   getUserInput() {
     return cy.get(this.userInput);
   }
@@ -35,11 +37,39 @@ export class CreateAccount {
   getYearInput() {
     return cy.get(this.yearInput);
   }
+  getSubmitBtn() {
+    return cy.get(this.submitBtn);
+  }
   getLoginLink() {
     return cy.get(this.loginLink);
   }
 
   // Metodos
+  setUpUsernameAndPassword(user, pass) {
+    this.getUserInput().type(user);
+    this.getPasswordInput().type(pass);
+  }
+
+  setUpGender(gender) {
+    switch (gender) {
+      case "male":
+        return this.getMaleInput().click();
+        break;
+      case "female":
+        return this.getFemaleInput().click();
+        break;
+      case "other":
+        return this.getOtherInput().click();
+        break;
+    }
+  }
+
+  setUpDayMonthYear(day, month, year) {
+    // VALIDAR que los NUMEROS sean validos
+    this.getDayInput().select(day - 1);
+    this.getMonthInput().select(month - 1);
+    this.getYearInput().select(year - 1921);
+  }
 }
 
 export const onCreateAccountPage = new CreateAccount();
