@@ -3,14 +3,12 @@
 import { onCreateAccountPage } from "../../support/page_objects/CreateAccount";
 
 // VARIABLES de CUENTA
-let random = Math.floor(Math.random() * 100);
-let usuario = "Prueba1234" + random;
+let user = "Prueba1234";
 let password = "prueba1234!";
 let gender = "male";
 let day = 15;
 let month = 5;
 let year = 2000;
-//
 
 describe("Create Account Page", () => {
   // Ir a la pagina de testeo, con comando propio
@@ -19,7 +17,10 @@ describe("Create Account Page", () => {
   });
 
   it("1. Register con todos los datos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(usuario, password);
+    // Las siguientes cuatro lineas se repiten en muchos casos.
+    // Pense en hacerlo en un solo metodo, pero preferi separarlos
+    // para no tener un metodo muy grande, con muchas variables.
+    onCreateAccountPage.setUpUsernameAndPassword(user, password);
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -30,7 +31,7 @@ describe("Create Account Page", () => {
     });
   });
 
-  it("2. Register con campo de  usuario vacío y el resto de los campos con  formato correcto", () => {
+  it("2. Register con campo de  user vacío y el resto de los campos con  formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword("", password);
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
@@ -99,7 +100,7 @@ describe("Create Account Page", () => {
   });
 
   it("8. Register con Password vacío y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(usuario, "");
+    onCreateAccountPage.setUpUsernameAndPassword(user, "");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -110,7 +111,7 @@ describe("Create Account Page", () => {
   });
 
   it("9. Register con Password con menos de 6 caracteres y el resto de os campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(usuario, "pr12!");
+    onCreateAccountPage.setUpUsernameAndPassword(user, "pr12!");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -121,7 +122,7 @@ describe("Create Account Page", () => {
   });
 
   it("10. Register con Password con más de 16 caracteres y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(usuario, "pruba1234567890?!");
+    onCreateAccountPage.setUpUsernameAndPassword(user, "pruba1234567890?!");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -131,5 +132,110 @@ describe("Create Account Page", () => {
       .should("contain", "Password must have between 6 and 16 characters");
   });
 
-  it.only("11. ");
+  it("11. Register con Password sin números y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, "pruebaprue!");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    onCreateAccountPage
+      .getErrorMessage()
+      .should("contain", "Password must have a special character and a number");
+  });
+
+  it("12. Register con Password sin letras y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, "123412345!");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    onCreateAccountPage
+      .getErrorMessage()
+      .should("contain", "Password must have a special character and a number");
+  });
+
+  it("13. Register con Password sin caracteres especiales y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, "prueba12345");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    onCreateAccountPage
+      .getErrorMessage()
+      .should("contain", "Password must have a special character and a number");
+  });
+
+  it("14. Register con Password con 6 caracteres y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, "pru12!");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain("/home");
+    });
+  });
+
+  it("15. Register con Password con  16 caracteres y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, "Pruba1234567890#");
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain("/home");
+    });
+  });
+
+  it("16. Input Gender debería funcionar como un radio button", () => {
+    onCreateAccountPage.getMaleInput().click();
+    onCreateAccountPage.getMaleInput().should("have.attr", "data-checked");
+
+    onCreateAccountPage.getFemaleInput().click();
+    onCreateAccountPage.getFemaleInput().should("have.attr", "data-checked");
+    onCreateAccountPage.getMaleInput().should("not.have.attr", "data-checked");
+
+    onCreateAccountPage.getOtherInput().click();
+    onCreateAccountPage.getOtherInput().should("have.attr", "data-checked");
+    onCreateAccountPage
+      .getFemaleInput()
+      .should("not.have.attr", "data-checked");
+  });
+
+  it("17. Register dejando el input Gender vacío y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    // Tuve que usar un selector un poco mas personalizado para poder encontrar el pop up
+    cy.get('[role="radiogroup"]')
+      .find('[value="Male"]')
+      .then(($input) => {
+        expect($input[0].validationMessage).to.eq(
+          "Selecciona una de estas opciones"
+        );
+      });
+  });
+
+  it("18. Register con todos los datos con formato correcto, modificando Male por Female", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpGender("female");
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain("/home");
+    });
+  });
+
+  it("19. Register con todos los datos con formato correcto, modificando Male por Other", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user + "11111", password);
+    onCreateAccountPage.setUpGender("other");
+    onCreateAccountPage.setUpDayMonthYear(day, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain("/home");
+    });
+  });
+
+  it.only("20. Validar el dropdown DoB", () => {});
 });
