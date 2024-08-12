@@ -10,9 +10,9 @@ export class CreateAccount {
   yearInput = '[data-cy="year"]';
   submitBtn = '[data-cy="submitForm"]';
   loginLink = '[data-cy="registertoggle"]';
+  errorMessage = '[data-cy="errorMessage"]';
 
   // Getters
-
   getUserInput() {
     return cy.get(this.userInput);
   }
@@ -43,32 +43,69 @@ export class CreateAccount {
   getLoginLink() {
     return cy.get(this.loginLink);
   }
-
-  // Metodos
-  setUpUsernameAndPassword(user, pass) {
-    this.getUserInput().type(user);
-    this.getPasswordInput().type(pass);
+  getErrorMessage() {
+    return cy.get(this.errorMessage);
   }
 
+  // Metodos
+  /**
+   * Utilizar para pasar usuario y contraseña
+   * @param {string} user
+   * @param {string} pass
+   */
+  setUpUsernameAndPassword(user, pass) {
+    // Para testear si los dos estan vacios
+    if (user == "" && pass == "") {
+      return;
+    }
+    // Para podes testear cuando UNO es campo vacio
+    if (user == "") {
+      this.getPasswordInput().type(pass);
+      return;
+    } else {
+      this.getUserInput().type(user);
+    }
+    if (pass == "") {
+      this.getUserInput().type(user);
+      return;
+    } else {
+      this.getPasswordInput().type(pass);
+    }
+  }
+
+  /**
+   * Utilizar para seleccionar un genero.
+   * Las variables son: male, female, other
+   * @param {string} gender
+   * @returns
+   */
   setUpGender(gender) {
     switch (gender) {
       case "male":
         return this.getMaleInput().click();
-        break;
       case "female":
         return this.getFemaleInput().click();
-        break;
       case "other":
         return this.getOtherInput().click();
-        break;
     }
   }
 
+  /**
+   * Utilizar para seleccionar fecha de nacimiento
+   * @param {number} day
+   * @param {number} month
+   * @param {number} year
+   */
   setUpDayMonthYear(day, month, year) {
-    // VALIDAR que los NUMEROS sean validos
-    this.getDayInput().select(day - 1);
-    this.getMonthInput().select(month - 1);
-    this.getYearInput().select(year - 1921);
+    day = day - 1;
+    month = month - 1;
+    year = year - 1921;
+    // valores entre 1 y 31
+    if (day >= 1 && day <= 32) this.getDayInput().select(day);
+    // valores entre 1 y 12
+    if (month >= 1 && month <= 12) this.getMonthInput().select(month);
+    // valores entre 1921 y 2020
+    if (year >= 1 && year <= 99) this.getYearInput().select(year);
   }
 }
 
