@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+// PO Imports
 import { onCreateAccountPage } from "../../support/page_objects/CreateAccount";
 
 // VARIABLES de CUENTA
@@ -237,5 +238,89 @@ describe("Create Account Page", () => {
     });
   });
 
-  it.only("20. Validar el dropdown DoB", () => {});
+  it("20. Validar el dropdown DoB", () => {
+    onCreateAccountPage.getDayInput().then((elem) => {
+      expect(elem[0].tagName).to.equal("SELECT");
+    });
+  });
+
+  it("21. Validar la selección de cada día", () => {
+    onCreateAccountPage.selectEachDay();
+  });
+
+  it("22. Validar que el dropdown DoB esté seleccionado el 1 por defecto", () => {
+    onCreateAccountPage.getDayInput().then((first) => {
+      expect(first.children().eq(0).text()).to.equal("1");
+    });
+  });
+
+  it("23. Register con dejando el DoB sin cambiar y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(1, month, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain("/home");
+    });
+  });
+
+  it("24. Validar que el dropdown Month se despliegue", () => {
+    onCreateAccountPage.getMonthInput().then((elem) => {
+      expect(elem[0].tagName).to.equal("SELECT");
+    });
+  });
+
+  it("25. Validar que se puedan elegir todos los meses del año", () => {
+    onCreateAccountPage.selectEachMonth();
+  });
+
+  it('26. Validar que el dropdown Month esté seleccionado por defecto "January"', () => {
+    onCreateAccountPage.getMonthInput().then((first) => {
+      expect(first.children().eq(0).text()).to.equal("January");
+    });
+  });
+
+  it("27. Validar que los meses estén en lenguaje Inglés", () => {
+    // Proceso validado en prueba 25, donde se corrobora con una lista ya en ingles
+  });
+
+  it("28. Register dejando el mes sin cambiar y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, 1, year);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain("/home");
+    });
+  });
+
+  it("29. Ingresar una fecha no valida", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user + "2321", password);
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(31, 2, year);
+    onCreateAccountPage.getSubmitBtn().click();
+  });
+
+  it("30. Validar que el dropdown Year se despliegue", () => {
+    onCreateAccountPage.getYearInput().then((elem) => {
+      expect(elem[0].tagName).to.equal("SELECT");
+    });
+  });
+
+  it("31. Validar que se puedan elegir todos los años", () => {
+    onCreateAccountPage.selectEachYear();
+  });
+
+  it("32. Register dejando el año sin cambiar y el resto de los campos con formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user + "asdasd", password);
+    onCreateAccountPage.setUpGender(gender);
+    onCreateAccountPage.setUpDayMonthYear(day, month, 1921);
+    onCreateAccountPage.getSubmitBtn().click();
+
+    cy.location().should((loc) => {
+      expect(loc.pathname.toString()).to.contain("/home");
+    });
+  });
 });

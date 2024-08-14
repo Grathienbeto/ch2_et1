@@ -94,12 +94,59 @@ export class CreateAccount {
     day = day - 1;
     month = month - 1;
     year = year - 1921;
-    // valores entre 1 y 31
-    if (day >= 1 && day <= 32) this.getDayInput().select(day);
-    // valores entre 1 y 12
-    if (month >= 1 && month <= 12) this.getMonthInput().select(month);
-    // valores entre 1921 y 2020
-    if (year >= 1 && year <= 99) this.getYearInput().select(year);
+
+    this.getDayInput().select(day);
+    this.getMonthInput().select(month);
+    this.getYearInput().select(year);
+  }
+
+  /**
+   * Para corroborar que esten todos los dias en el select
+   */
+  selectEachDay() {
+    this.getDayInput().then((input) => {
+      for (let i = 0; i < input.children().length; i++) {
+        expect(input.children().eq(i).attr("value")).to.equal(`${i + 1}`);
+      }
+    });
+  }
+
+  /**
+   * Para corroborar que esten todos los meses
+   */
+  selectEachMonth() {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    this.getMonthInput().then((input) => {
+      for (let i = 0; i < months.length; i++) {
+        expect(input.children().eq(i).text()).to.equal(`${months[i]}`);
+      }
+    });
+  }
+
+  /**
+   * Para corroborar que esten todos los años
+   */
+  selectEachYear() {
+    this.getYearInput().then((input) => {
+      for (let i = 0; i < input.children().length; i++) {
+        //expect(input.children().eq(i).text()).to.equal(`${i + 1921}`);
+        expect(input.children().eq(i).attr("value")).to.equal(`${i + 1921}`);
+      }
+    });
   }
 }
 
