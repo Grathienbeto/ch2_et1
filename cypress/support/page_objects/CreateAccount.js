@@ -1,4 +1,4 @@
-export class CreateAccount {
+export class CreateAccountPage {
   // Atributos
   userInput = '[data-cy="user"]';
   passwordInput = '[data-cy="pass"]';
@@ -150,4 +150,4 @@ export class CreateAccount {
   }
 }
 
-export const onCreateAccountPage = new CreateAccount();
+export const onCreateAccountPage = new CreateAccountPage();
