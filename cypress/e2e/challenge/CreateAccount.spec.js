@@ -296,11 +296,13 @@ describe("Create Account Page", () => {
     });
   });
 
-  it("29. Ingresar una fecha no valida", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user + "2321", password);
+  it.only("29. Ingresar una fecha no valida", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(user + "232321", password);
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(31, 2, year);
     onCreateAccountPage.getSubmitBtn().click();
+
+    onCreateAccountPage.getErrorMessage().should("exist");
   });
 
   it("30. Validar que el dropdown Year se despliegue", () => {
