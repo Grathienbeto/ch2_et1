@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
 
 Cypress.Commands.add("visitApp", () => {
-  cy.visit("/");
+  cy.visit(Cypress.env("baseUrl"));
 });

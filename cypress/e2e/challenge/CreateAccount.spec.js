@@ -4,12 +4,11 @@
 import { onCreateAccountPage } from "../../support/page_objects/CreateAccount";
 
 // VARIABLES de CUENTA
-let user = "Prueba1234";
-let password = "prueba1234!";
 let gender = "male";
 let day = 15;
 let month = 5;
 let year = 2000;
+// VARIABLES de CUENTA
 
 describe("Create Account Page", () => {
   // Ir a la pagina de testeo, con comando propio
@@ -17,11 +16,14 @@ describe("Create Account Page", () => {
     cy.visitApp();
   });
 
-  it("1. Register con todos los datos con formato correcto", () => {
+  it.only("1. Register con todos los datos con formato correcto", () => {
     // Las siguientes cuatro lineas se repiten en muchos casos.
     // Pense en hacerlo en un solo metodo, pero preferi separarlos
     // para no tener un metodo muy grande, con muchas variables.
-    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -32,8 +34,8 @@ describe("Create Account Page", () => {
     });
   });
 
-  it("2. Register con campo de  user vacío y el resto de los campos con  formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword("", password);
+  it("2. Register con campo de  Cypress.env('user') vacío y el resto de los campos con  formato correcto", () => {
+    onCreateAccountPage.setUpUsernameAndPassword("", Cypress.env("password"));
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -47,7 +49,7 @@ describe("Create Account Page", () => {
   });
 
   it("3. Register con User corto y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword("P4" + random, password);
+    onCreateAccountPage.setUpUsernameAndPassword("P4", Cypress.env("password"));
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -60,7 +62,7 @@ describe("Create Account Page", () => {
   it("4. Register con User largo y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
       "Prueba1234567890123456789" + random,
-      password
+      Cypress.env("password")
     );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
@@ -72,7 +74,10 @@ describe("Create Account Page", () => {
   });
 
   it("5. Register con User con un espacio vacío y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword("Pru eba1234", password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      "Pru eba1234",
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -83,7 +88,10 @@ describe("Create Account Page", () => {
   });
 
   it("6. Register con User con un carácter especial y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword("Prueba!1234", password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      "Prueba!1234",
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -93,15 +101,15 @@ describe("Create Account Page", () => {
       .should("contain", "Username cannot have special characters");
   });
 
-  it("7. Input Password debería aparecer con formato password", () => {
-    onCreateAccountPage.setUpUsernameAndPassword("", password);
+  it("7. Input Password debería aparecer con formato ) ", () => {
+    onCreateAccountPage.setUpUsernameAndPassword("", Cypress.env("password"));
     onCreateAccountPage
       .getPasswordInput()
-      .should("have.attr", "type", "password");
+      .should("have.attr", "type", "Cypress.env('password'");
   });
 
   it("8. Register con Password vacío y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "");
+    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user"), "");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -112,7 +120,7 @@ describe("Create Account Page", () => {
   });
 
   it("9. Register con Password con menos de 6 caracteres y el resto de os campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "pr12!");
+    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user"), "pr12!");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -123,7 +131,10 @@ describe("Create Account Page", () => {
   });
 
   it("10. Register con Password con más de 16 caracteres y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "pruba1234567890?!");
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      "pruba1234567890?!"
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -134,7 +145,10 @@ describe("Create Account Page", () => {
   });
 
   it("11. Register con Password sin números y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "pruebaprue!");
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      "pruebaprue!"
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -145,7 +159,10 @@ describe("Create Account Page", () => {
   });
 
   it("12. Register con Password sin letras y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "123412345!");
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      "123412345!"
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -156,7 +173,10 @@ describe("Create Account Page", () => {
   });
 
   it("13. Register con Password sin caracteres especiales y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "prueba12345");
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      "prueba12345"
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -167,7 +187,7 @@ describe("Create Account Page", () => {
   });
 
   it("14. Register con Password con 6 caracteres y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "pru12!");
+    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user"), "pru12!");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -177,7 +197,10 @@ describe("Create Account Page", () => {
   });
 
   it("15. Register con Password con  16 caracteres y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, "Pruba1234567890#");
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      "Pruba1234567890#"
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -202,7 +225,10 @@ describe("Create Account Page", () => {
   });
 
   it("17. Register dejando el input Gender vacío y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
 
@@ -217,7 +243,10 @@ describe("Create Account Page", () => {
   });
 
   it("18. Register con todos los datos con formato correcto, modificando Male por Female", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender("female");
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -228,7 +257,10 @@ describe("Create Account Page", () => {
   });
 
   it("19. Register con todos los datos con formato correcto, modificando Male por Other", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user + "11111", password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender("other");
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -255,7 +287,10 @@ describe("Create Account Page", () => {
   });
 
   it("23. Register con dejando el DoB sin cambiar y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(1, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -286,7 +321,10 @@ describe("Create Account Page", () => {
   });
 
   it("28. Register dejando el mes sin cambiar y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user, password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, 1, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -296,8 +334,11 @@ describe("Create Account Page", () => {
     });
   });
 
-  it.only("29. Ingresar una fecha no valida", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user + "232321", password);
+  it("29. Ingresar una fecha no valida", () => {
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(31, 2, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -316,7 +357,10 @@ describe("Create Account Page", () => {
   });
 
   it("32. Register dejando el año sin cambiar y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(user + "asdasd", password);
+    onCreateAccountPage.setUpUsernameAndPassword(
+      Cypress.env("user"),
+      Cypress.env("password")
+    );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, 1921);
     onCreateAccountPage.getSubmitBtn().click();
