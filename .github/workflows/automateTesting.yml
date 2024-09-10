@@ -1,0 +1,26 @@
+name: Automate Testing
+on:
+  push:
+    branches:
+      - main
+  schedule:
+      # todos los dias al mediodia
+      # min / hr / diaMes / mes / diaSemana
+      - cron: "0 11 * * *"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download code
+        uses: actions/checkout
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Cypress
+        run: run cypress:run
