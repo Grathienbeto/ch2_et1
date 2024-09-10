@@ -6,6 +6,7 @@ on:
   schedule:
       # todos los dias al mediodia
       # min / hr / diaMes / mes / diaSemana
+      # https://docs.github.com/es/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule
       - cron: "0 11 * * *"
 jobs:
   test:
