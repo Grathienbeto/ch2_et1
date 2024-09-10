@@ -16,12 +16,12 @@ describe("Create Account Page", () => {
     cy.visitApp();
   });
 
-  it.only("1. Register con todos los datos con formato correcto", () => {
+  it("1. Register con todos los datos con formato correcto", () => {
     // Las siguientes cuatro lineas se repiten en muchos casos.
     // Pense en hacerlo en un solo metodo, pero preferi separarlos
     // para no tener un metodo muy grande, con muchas variables.
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user") + "11",
+      Cypress.env("user") + "0011",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender(gender);
@@ -29,9 +29,12 @@ describe("Create Account Page", () => {
     onCreateAccountPage.getSubmitBtn().click();
 
     // Assertion para corroborar que la ruta haya cambiado
+    cy.wait(10000)
+        
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
+    
   });
 
   it("2. Register con campo de  Cypress.env('user') vacío y el resto de los campos con  formato correcto", () => {
@@ -49,11 +52,12 @@ describe("Create Account Page", () => {
   });
 
   it("3. Register con User corto y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword("P4", Cypress.env("password"));
+    onCreateAccountPage.setUpUsernameAndPassword("P54321", Cypress.env("password"));
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
 
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -61,13 +65,14 @@ describe("Create Account Page", () => {
 
   it("4. Register con User largo y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      "Prueba1234567890123456789",
+      "Prueba1234567890123456",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
 
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -105,11 +110,11 @@ describe("Create Account Page", () => {
     onCreateAccountPage.setUpUsernameAndPassword("", Cypress.env("password"));
     onCreateAccountPage
       .getPasswordInput()
-      .should("have.attr", "type", "Cypress.env('password'");
+      .should("have.attr", "type", "password");
   });
 
   it("8. Register con Password vacío y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user")+"22", "");
+    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user"), "");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -120,7 +125,7 @@ describe("Create Account Page", () => {
   });
 
   it("9. Register con Password con menos de 6 caracteres y el resto de os campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user")+"33", "pr12!");
+    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user"), "pr12!");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
@@ -132,7 +137,7 @@ describe("Create Account Page", () => {
 
   it("10. Register con Password con más de 16 caracteres y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"44",
+      Cypress.env("user"),
       "pruba1234567890?!"
     );
     onCreateAccountPage.setUpGender(gender);
@@ -146,7 +151,7 @@ describe("Create Account Page", () => {
 
   it("11. Register con Password sin números y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"55",
+      Cypress.env("user"),
       "pruebaprue!"
     );
     onCreateAccountPage.setUpGender(gender);
@@ -160,7 +165,7 @@ describe("Create Account Page", () => {
 
   it("12. Register con Password sin letras y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"66",
+      Cypress.env("user")+"66667",
       "123412345!"
     );
     onCreateAccountPage.setUpGender(gender);
@@ -174,7 +179,7 @@ describe("Create Account Page", () => {
 
   it("13. Register con Password sin caracteres especiales y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"77",
+      Cypress.env("user"),
       "prueba12345"
     );
     onCreateAccountPage.setUpGender(gender);
@@ -187,10 +192,12 @@ describe("Create Account Page", () => {
   });
 
   it("14. Register con Password con 6 caracteres y el resto de los campos con formato correcto", () => {
-    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user")+"88", "pru12!");
+    onCreateAccountPage.setUpUsernameAndPassword(Cypress.env("user")+"8888888", "pru12!");
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
+
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -198,12 +205,14 @@ describe("Create Account Page", () => {
 
   it("15. Register con Password con  16 caracteres y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"99",
+      Cypress.env("user")+"999999",
       "Pruba1234567890#"
     );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
+
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -226,7 +235,7 @@ describe("Create Account Page", () => {
 
   it("17. Register dejando el input Gender vacío y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"101",
+      Cypress.env("user"),
       Cypress.env("password")
     );
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
@@ -244,13 +253,14 @@ describe("Create Account Page", () => {
 
   it("18. Register con todos los datos con formato correcto, modificando Male por Female", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"102",
+      Cypress.env("user")+"10210210",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender("female");
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
 
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -258,13 +268,14 @@ describe("Create Account Page", () => {
 
   it("19. Register con todos los datos con formato correcto, modificando Male por Other", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"103",
+      Cypress.env("user")+"103103103",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender("other");
     onCreateAccountPage.setUpDayMonthYear(day, month, year);
     onCreateAccountPage.getSubmitBtn().click();
 
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -288,13 +299,14 @@ describe("Create Account Page", () => {
 
   it("23. Register con dejando el DoB sin cambiar y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"104",
+      Cypress.env("user")+"104104104104",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(1, month, year);
     onCreateAccountPage.getSubmitBtn().click();
 
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -322,13 +334,14 @@ describe("Create Account Page", () => {
 
   it("28. Register dejando el mes sin cambiar y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"105",
+      Cypress.env("user")+"105105105105",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, 1, year);
     onCreateAccountPage.getSubmitBtn().click();
 
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
@@ -336,7 +349,7 @@ describe("Create Account Page", () => {
 
   it("29. Ingresar una fecha no valida", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"106",
+      Cypress.env("user")+"106106",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender(gender);
@@ -358,13 +371,14 @@ describe("Create Account Page", () => {
 
   it("32. Register dejando el año sin cambiar y el resto de los campos con formato correcto", () => {
     onCreateAccountPage.setUpUsernameAndPassword(
-      Cypress.env("user")+"107",
+      Cypress.env("user")+"107107107107",
       Cypress.env("password")
     );
     onCreateAccountPage.setUpGender(gender);
     onCreateAccountPage.setUpDayMonthYear(day, month, 1921);
     onCreateAccountPage.getSubmitBtn().click();
 
+    cy.wait(10000)
     cy.location().should((loc) => {
       expect(loc.pathname.toString()).to.contain("/home");
     });
