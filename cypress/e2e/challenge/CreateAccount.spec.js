@@ -16,7 +16,7 @@ describe("Create Account Page", () => {
     cy.visitApp();
   });
 
-  it.only("1. Register con todos los datos con formato correcto", () => {
+  it("1. Register con todos los datos con formato correcto", () => {
     // Las siguientes cuatro lineas se repiten en muchos casos.
     // Pense en hacerlo en un solo metodo, pero preferi separarlos
     // para no tener un metodo muy grande, con muchas variables.
