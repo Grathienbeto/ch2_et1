@@ -10,6 +10,7 @@ let month = 5;
 let year = 2000;
 // VARIABLES de CUENTA
 
+
 describe("Create Account Page", () => {
   // Ir a la pagina de testeo, con comando propio
   beforeEach("Ir a la pagina", () => {
@@ -364,6 +365,7 @@ describe("Create Account Page", () => {
       expect(elem[0].tagName).to.equal("SELECT");
     });
   });
+  
 
   it("31. Validar que se puedan elegir todos los años", () => {
     onCreateAccountPage.selectEachYear();
